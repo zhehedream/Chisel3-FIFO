@@ -18,10 +18,11 @@ class MyFifo(val w : Int, val depth : Int) extends Module {
   val rp = RegInit(0.U(depth.W))
   val dataout = RegInit(0.U(w.W))
 
-  def IndexAdd(index : UInt) = {
-    when(index === (depth - 1).U) { index := 0.U }
-    .otherwise { index := index + 1.U }
-    index
+  def IndexAdd(index : UInt) : UInt = {
+    val temp = RegInit(index)
+    when(index === (depth - 1).U) { temp := 0.U }
+    .otherwise { temp := index + 1.U }
+    temp
   }
 
   when(io.wr === true.B && io.rd === true.B) {
